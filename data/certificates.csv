@@ -1,0 +1,4 @@
+cert_id,product_id,sertifikaat,tüüp,tõendusjõud,dokumendi_number,kehtiv_alates,kehtiv_kuni,kehtivuse_staatus,allika_url,märkused
+c001,p001,REACH,regulatory,keskmine,,, ,kontrollida,https://zenitheurope.com/en/products,verify official certificate
+c002,p002,REACH,regulatory,keskmine,,, ,kontrollida,https://zenitheurope.com/en/products,verify official certificate
+c003,p004,FDA,product,high,,, ,kontrollida,https://zenitheurope.com/en/products,verify food contact evidence

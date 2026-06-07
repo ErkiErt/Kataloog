@@ -1,0 +1,5 @@
+source_id,product_id,allika_tüüp,pealkiri,url,versioon,kuupäev,kontrollitud_kuupäev,esmane_allikas,märkused
+s001,p001,official pdf,EP65130 PDF,https://zenitheurope.com/sites/default/files/assets/files/Datasheets/EP65130.pdf,2020,2026-06-07,2026-06-07,yes,official datasheet
+s002,p002,official page,Satyr Premium,https://zenitheurope.com/nl/producten/nbr-rubberplaten/satyr-premium,latest,2026-06-07,2026-06-07,yes,page + datasheet reference
+s003,p003,official page,snow plow rubber example,https://www.uw-elast.se/en/polyurethane-plow-blades/,latest,2026-06-07,2026-06-07,no,reference category for UI logic only
+s004,p004,official page,Viking FG,https://zenitheurope.com/en/products/food-grade-vmq-silicone/pegasus-epdm,latest,2026-06-07,2026-06-07,no,reference link
