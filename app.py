@@ -1,106 +1,52 @@
 
+import re
 import streamlit as st
-import pandas as pd
-from pathlib import Path
 
-st.set_page_config(page_title="Zenithi assistent", layout="wide")
-BASE = Path(__file__).resolve().parent
-DATA = BASE / "data"
+st.set_page_config(page_title='Materjalide sobitaja', layout='wide')
 
-@st.cache_data
-def load(name):
-    return pd.read_csv(DATA / name)
+CATALOG = [
+    {"name": "EPDM aknatihend", "category": "aknatihend", "material": "EPDM", "tags": ["uv", "ilmastik", "tihend"], "score": 95},
+    {"name": "Silicone aknatihend", "category": "aknatihend", "material": "Silicone", "tags": ["kuumus", "paindlik", "tihend"], "score": 85},
+    {"name": "SBR terrassipadi", "category": "terrass", "material": "SBR", "tags": ["puit", "tuulutus", "aluskumm", "niiskus"], "score": 90},
+    {"name": "EPDM terrassipadi", "category": "terrass", "material": "EPDM", "tags": ["puit", "tuulutus", "aluskumm", "ilmastik"], "score": 88},
+    {"name": "Marine fender standard", "category": "sadam", "material": "Kumm", "tags": ["fender", "kai", "löögikaitse"], "score": 98},
+    {"name": "Betoonivuugi tihend", "category": "ehitus", "material": "EPDM", "tags": ["vuuk", "läbiviik", "veekindel"], "score": 92},
+]
 
-products = load("products.csv")
-sources = load("sources.csv")
-certs = load("certificates.csv")
+def detect_category(text):
+    t = text.lower()
+    if any(k in t for k in ['akna', 'tihend']): return 'aknatihend'
+    if any(k in t for k in ['terrass', 'puidu alla', 'tuulutus']): return 'terrass'
+    if any(k in t for k in ['sadam', 'kai', 'fender', 'vender']): return 'sadam'
+    if any(k in t for k in ['betoon', 'ehitus', 'vuuk', 'läbiviik']): return 'ehitus'
+    return 'aknatihend'
 
-st.title("Zenithi kataloogi assistent")
-st.caption("Lihtne materjalivalik, mõõdud, artiklikoodid ja ametlikud allikad.")
+def tokenize(text):
+    return set(re.findall(r"[\wäöõüšž-]+", text.lower()))
 
-query = st.text_input("Kirjuta kasutus või tingimus", placeholder="Näiteks: keemia, külm, sahk, lumi, õli, UV")
+def score_item(text, item, cat):
+    toks = tokenize(text)
+    s = 0
+    if item['category'] == cat: s += 40
+    if any(tag in toks for tag in item['tags']): s += 35
+    if item['material'].lower() in toks: s += 10
+    s += min(item['score'] // 2, 10)
+    return s
 
-with st.sidebar:
-    st.header("Filtrid")
-    categories = st.multiselect("Materjalipere", sorted(products["kategooria"].unique()), default=sorted(products["kategooria"].unique()))
-    statuses = st.multiselect("Kontrollistaatus", sorted(products["kontrollistaatus"].unique()), default=sorted(products["kontrollistaatus"].unique()))
-    temp_min = st.slider("Min temp", int(products["min_temp_c"].min()), int(products["max_temp_c"].max()), int(products["min_temp_c"].min()))
-    temp_max = st.slider("Max temp", int(products["min_temp_c"].min()), int(products["max_temp_c"].max()), int(products["max_temp_c"].max()))
-    standard_only = st.checkbox("Ainult standard")
-    only_custom = st.checkbox("Ainult erilahendused")
-    only_pdf = st.checkbox("Ainult ametlik PDF olemas")
+st.title('Nutikas materjalisoovitus')
+query = st.text_input('Kirjuta, mida vajad', placeholder='nt aknatihendit vaja')
 
-f = products.copy()
-if query.strip():
-    q = query.lower()
-    mapping = {
-        'keemia': ['chemical','oils','grease','solvents','acids'],
-        'külm': ['-90','-40','-30'],
-        'kuum': ['230','110','90'],
-        'sahk': ['abrasion','wear','plow','snow'],
-        'lumi': ['plow','snow','abrasion'],
-        'õli': ['oil','oils','grease'],
-        'uv': ['uv','ozone','weather'],
-    }
-    terms = []
-    for k,v in mapping.items():
-        if k in q:
-            terms = v
-            break
-    if terms:
-        mask = pd.Series(False, index=f.index)
-        for col in ['toode','täisnimi','keemiline_vastupidavus','peamine_omadus','rakendus','märkused']:
-            vals = f[col].astype(str).str.lower()
-            for t in terms:
-                mask = mask | vals.str.contains(t, na=False)
-        f = f[mask]
-
-f = f[f['kategooria'].isin(categories)]
-f = f[f['kontrollistaatus'].isin(statuses)]
-f = f[(f['min_temp_c'] >= temp_min) & (f['max_temp_c'] <= temp_max)]
-if standard_only:
-    f = f[f['standard_tase'].eq('standard')]
-if only_custom:
-    f = f[f['custom_available'].astype(str).str.lower().isin(['yes','true','1'])]
-if only_pdf:
-    f = f[f['pdf_url'].notna()]
-
-st.subheader('Soovitused')
-if f.empty:
-    st.info('Tulemusi ei leitud. Proovi laiemaid filtreid.')
-else:
-    for _, r in f.iterrows():
-        with st.container(border=True):
-            c1, c2, c3 = st.columns([2.2,1,1])
-            with c1:
-                st.markdown(f"**{r['toode']}** — {r['täisnimi']}")
-                st.write(f"{r['standard_tase'].upper()} · {r['kontrollistaatus']}")
-                st.write(f"{r['peamine_omadus']} | {r['rakendus']}")
-            with c2:
-                st.write(f"Artiklikood: `{r['artiklikood']}`")
-                st.write(f"Kõvadus: {r['kõvadus_shore_a']}")
-                st.write(f"Temp: {r['min_temp_c']}…{r['max_temp_c']} °C")
-            with c3:
-                st.write(f"Paksused: {r['standard_thicknesses_mm']}")
-                st.write(f"Laius: {r['standard_widths_mm']} mm")
-                st.write(f"Custom: {r['custom_available']}")
-                if st.button('Näita allikaid', key=r['product_id']):
-                    st.session_state['detail'] = r['product_id']
-
-pid = st.session_state.get('detail')
-if pid:
-    st.divider()
-    row = products[products['product_id'] == pid].iloc[0]
-    st.subheader(f"Detailid: {row['toode']}")
-    a,b = st.columns(2)
-    with a:
-        st.write({k: row[k] for k in ['kategooria','täisnimi','artiklikood','standard_tase','peamine_omadus','rakendus','märkused']})
-        st.write('PDF:', row['pdf_url'])
-        st.write('Tooteleht:', row['page_url'])
-    with b:
-        st.markdown('**Allikad**')
-        st.dataframe(sources[sources['product_id']==pid], use_container_width=True, hide_index=True)
-        st.markdown('**Sertifikaadid**')
-        st.dataframe(certs[certs['product_id']==pid], use_container_width=True, hide_index=True)
-
-st.caption('Spetsifikatsioonid võivad muutuda ilma etteteatamata. Kontrolli alati ametlikku allikat.')
+if query:
+    cat = detect_category(query)
+    results = []
+    for item in CATALOG:
+        if item['category'] != cat:
+            continue
+        results.append((score_item(query, item, cat), item))
+    results.sort(key=lambda x: (-x[0], -x[1]['score'], x[1]['name']))
+    st.subheader(f'Sobiv kategooria: {cat}')
+    for i, (sc, item) in enumerate(results[:5], 1):
+        st.write(f"{i}. {item['name']} — skoor {sc}")
+        st.caption(f"Materjal: {item['material']} | Märksõnad: {', '.join(item['tags'])}")
+    if not results:
+        st.warning('Sobivaid tulemusi ei leitud.')
