@@ -1,0 +1,172 @@
+[
+  {
+    "name": "Manticore Eco EPDM 25 mm",
+    "category": "aknatihend",
+    "material": "EPDM",
+    "use_case": "akna- ja välitihendid",
+    "keywords": [
+      "uv",
+      "ilmastik",
+      "outdoor",
+      "weather"
+    ],
+    "tags": [
+      "uv",
+      "ilmastik",
+      "tihend"
+    ],
+    "priority": 20,
+    "source": "Zenith Europe Manticore Eco",
+    "url": "https://www.zenitheurope.com/en/products/epdm/manticore-eco",
+    "technical": {
+      "min_temperature": -30,
+      "max_temperature": 90,
+      "hardness_shore_a": 70,
+      "tensile_strength_mpa": 4,
+      "elongation_break_pct": 200
+    }
+  },
+  {
+    "name": "Manticore Eco EPDM 5 mm",
+    "category": "aknatihend",
+    "material": "EPDM",
+    "use_case": "akna- ja välitihendid",
+    "keywords": [
+      "uv",
+      "ilmastik",
+      "outdoor"
+    ],
+    "tags": [
+      "uv",
+      "ilmastik",
+      "tihend"
+    ],
+    "priority": 18,
+    "source": "Zenith Europe Manticore Eco",
+    "url": "https://www.zenitheurope.com/en/products/epdm/manticore-eco",
+    "technical": {
+      "min_temperature": -30,
+      "max_temperature": 90,
+      "hardness_shore_a": 70,
+      "tensile_strength_mpa": 4,
+      "elongation_break_pct": 200
+    }
+  },
+  {
+    "name": "Terrace pad EPDM 6x60x60",
+    "category": "terrass",
+    "material": "EPDM",
+    "use_case": "puidu alla tuulutus ja niiskuskaitse",
+    "keywords": [
+      "tuulutus",
+      "drenaaž",
+      "niiskus",
+      "decking"
+    ],
+    "tags": [
+      "puit",
+      "tuulutus",
+      "aluskumm"
+    ],
+    "priority": 18,
+    "source": "quadrofixing terrace pads",
+    "url": "https://quadrofixing.eu/accessories/terrace-pads/c3",
+    "technical": {
+      "function": "ventilation",
+      "material_type": "rubber granulate"
+    }
+  },
+  {
+    "name": "SBR rubber pads for decking joists",
+    "category": "terrass",
+    "material": "SBR",
+    "use_case": "terrassi aluskumm",
+    "keywords": [
+      "joist",
+      "decking",
+      "moisture",
+      "drainage"
+    ],
+    "tags": [
+      "puit",
+      "tuulutus",
+      "aluskumm"
+    ],
+    "priority": 16,
+    "source": "DD Group Deck-Dry",
+    "url": "https://ddgro.eu/en/sbr-rubber-pads-for-decking-joists/",
+    "technical": {
+      "function": "sound isolation",
+      "material_type": "SBR rubber pads"
+    }
+  },
+  {
+    "name": "Marine fender system",
+    "category": "sadam",
+    "material": "Kumm",
+    "use_case": "kai ja laeva kaitse",
+    "keywords": [
+      "fender",
+      "dock",
+      "harbor",
+      "berth"
+    ],
+    "tags": [
+      "fender",
+      "kai",
+      "löögikaitse"
+    ],
+    "priority": 25,
+    "source": "Trelleborg Marine Fenders",
+    "url": "https://www.trelleborg.com/en/marine-and-infrastructure/products-solutions-and-services/marine/marine-fenders",
+    "technical": {
+      "energy_absorption": "high",
+      "reaction_force": "low to moderate"
+    }
+  },
+  {
+    "name": "Fender Application Design Manual",
+    "category": "sadam",
+    "material": "Kumm",
+    "use_case": "fender sizing and selection",
+    "keywords": [
+      "energy absorption",
+      "reaction force"
+    ],
+    "tags": [
+      "fender",
+      "kai",
+      "löögikaitse"
+    ],
+    "priority": 20,
+    "source": "Trelleborg Design Manual",
+    "url": "https://www.trelleborg.com/marine-and-infrastructure/-/media/marine-systems/resources/guides-and-design-manual/downloads/fender-",
+    "technical": {
+      "energy_absorption": "selection criterion",
+      "reaction_force": "selection criterion"
+    }
+  },
+  {
+    "name": "Betoonivuugi tihend",
+    "category": "ehitus",
+    "material": "EPDM",
+    "use_case": "vuugid ja läbiviigud",
+    "keywords": [
+      "vuuk",
+      "veekindel",
+      "construction"
+    ],
+    "tags": [
+      "vuuk",
+      "läbiviik",
+      "veekindel"
+    ],
+    "priority": 18,
+    "source": "Construction joint seals guide",
+    "url": "https://www.scribd.com/document/505123003/SECTION-07910-Preformed-Joint-Seals-Rev-0",
+    "technical": {
+      "function": "sealing",
+      "application": "concrete structure"
+    }
+  }
+]
